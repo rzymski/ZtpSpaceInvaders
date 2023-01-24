@@ -24,11 +24,11 @@ string text = @"
                                                                                                                                 
 ";
 
-//Console.ForegroundColor = ConsoleColor.Red;
-//Console.WriteLine(text);
-//Console.ResetColor();
-//string username = Console.ReadLine();
-string username = "rzymski";
+Console.ForegroundColor = ConsoleColor.Red;
+Console.WriteLine(text);
+Console.ResetColor();
+string username = Console.ReadLine();
+//string username = "rzymski";
 
 Board board = Board.getInstance();
 board.initGame(username);

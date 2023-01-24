@@ -11,7 +11,7 @@ namespace ZTP.Projekt
         public int AmmunitionValue { get; set; }
         public BonusAmmunition(IShip ship) : base(ship)
         {
-            AmmunitionValue = 30;
+            AmmunitionValue = 10;
         }
         public override int getAmmunition()
         {

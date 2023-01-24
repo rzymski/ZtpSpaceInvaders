@@ -23,7 +23,7 @@ namespace ZTP.Projekt
             sprite = Sprites.shipString;
             Attack = 1;
             Hp = 3;
-            Ammunition = 50;
+            Ammunition = 30;
             Position = new Position(1, Console.WindowHeight - SHIP_BUFFER_Y_POSITION);
         }
 

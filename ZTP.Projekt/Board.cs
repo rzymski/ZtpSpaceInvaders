@@ -303,16 +303,15 @@ namespace ZTP.Projekt
             Ship = Ship.getInstance();
 
             Menu.drawRectangle(0, 0, BoardHeight + 4, BoardWidth + 2, 15);
-            //drawHp(BoardWidth + 6, 1);
-            //drawAttackPower(BoardWidth + 6, 4);
+            drawHp(BoardWidth + 6, 1);
+            drawAttackPower(BoardWidth + 6, 4);
             drawData();
 
             clearAllBoard();
-            //createAliensFirstLine(startAlienRow, probabilityAppearanceAlien, probabilityMutationAlien);
-            //createBonuses(probalityBonusAppearance, startBonusesRow);
-            //drawAliens();
+            createAliensFirstLine(startAlienRow, probabilityAppearanceAlien, probabilityMutationAlien);
+            createBonuses(probalityBonusAppearance, startBonusesRow);
+            drawAliens();
             drawShip();
-            //drawBonuses();
             startGame();
         }
 
@@ -340,14 +339,9 @@ namespace ZTP.Projekt
                         var aliens = b.Aliens.getList();
                         foreach (Alien alien in aliens)
                         {
-                            //Console.SetCursorPosition(b.BoardWidth + 10, 20);
-                            //Console.Write(b.Ship.Position.x + " " + b.Ship.Position.y + " " + b.BoardHeight);
-                            //dodać inne warunki chyba
-
                             if (alien.Position.y == b.Ship.Position.y && alien.Position.x == b.Ship.Position.x)
                             {
                                 b.Ship.Hp -= 1;
-                                //Obcych juz usuwa w Alien jak dochodza do linii statku i ustawia im status do usuniecia a potem w iteratorze
                                 alien.ClearAlien();
                             }
                         }
@@ -619,10 +613,6 @@ namespace ZTP.Projekt
 
             Thread third = new Thread(MyThreadClass.bulletMovements);
             third.Start();
-
-            //Menu.clearBoard(1, 1, BoardHeight - 5, BoardWidth);//Czyszczenie czesci planszy kosmitow
-            //Menu.clearBoard(1, BoardHeight - 4, 8, BoardWidth);//Czyszczenie czesci planszy statku
-            //Console.ReadKey();
         }
 
         /// <summary>
