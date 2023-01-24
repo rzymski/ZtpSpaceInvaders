@@ -47,7 +47,7 @@ namespace ZTP.Projekt
                     if (i == 0)
                     {
                         Position.x += Sprite[i].Length;
-                        if (Position.x + Sprite[i].Length >= BoardWidth) 
+                        if (Position.x + 1  > BoardWidth) 
                             Position.x = 1; //alternatywna wersja Position.x = BoardWidth - Sprite[i].Length;
                     }
                 }
