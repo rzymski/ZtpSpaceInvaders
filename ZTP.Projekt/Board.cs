@@ -330,6 +330,9 @@ namespace ZTP.Projekt
                     // Nałożenie blokady na czas rysowania, żeby drugi wątek nie zmienił pozycji rysowania w tym czasie
                     lock (Identity)
                     {
+                        b.moveRound();
+                        b.clearAndDrawDataAndBonuses();
+
                         //sprawdzenie kolizji ze statkiem
                         var aliens = b.Aliens.getList();
                         foreach (Alien alien in aliens)
@@ -338,24 +341,12 @@ namespace ZTP.Projekt
                             {
                                 b.Ship.Hp -= 1;
                                 alien.ClearAlien();
+                                b.Ship.moveShip(MoveDirection.None, b.BoardWidth);
                             }
                         }
-                        //czyszczenie ekranu, ale tylko na obszarze kosmitow bez statku i bonusow
-                        Menu.clearBoard(1, 4, b.BoardHeight - 6, b.BoardWidth);
-                        b.clearHp(b.BoardWidth + 6, 1);
-                        b.clearAmmunition(b.BoardWidth + 6, 4);
-                        b.clearPoints(b.BoardHeight + 6, 7);
-                        b.clearBonuses(1, b.startBonusesRow);
-                        b.ClearDiffLevel(b.BoardWidth + 6, 13);
 
-
-                        b.moveRound();
-                       
-                        MoveDirection m = MoveDirection.None;
-                        b.Ship.moveShip(m, b.BoardWidth);
-                        //na razie rysuje bonusy, ale nie czysci ich obaszru poniewaz bonusy sie nie nakladaja i nie mamy funkcjonalnosci ich usuwajacej, pozniej sie doda czyszczenie narysowanego bonusu po jego zniknieciu
-                        b.drawBonuses();
-                        b.drawData();
+                        b.clearAndDrawDataAndBonuses();
+                        b.Ship.moveShip(MoveDirection.None, b.BoardWidth);
                     }
                     Thread.Sleep(b.timeBetweenNextWave);
                 }
@@ -413,7 +404,7 @@ namespace ZTP.Projekt
                 {
                     lock (Identity)
                     {
-                        b.drawBulletsTrajectory();
+                        b.bulletsTrajectory();
                     }
                     Thread.Sleep(25);
                 }
@@ -434,6 +425,17 @@ namespace ZTP.Projekt
             Console.SetCursorPosition(x, startBonusesRow+2);
             Console.Write(new String(' ', BoardWidth));
             Console.SetCursorPosition(x, startBonusesRow);
+        }
+
+        private void clearAndDrawDataAndBonuses()
+        {
+            clearHp(BoardWidth + 6, 1);
+            clearAmmunition(BoardWidth + 6, 4);
+            clearPoints(BoardHeight + 6, 7);
+            clearBonuses(1, startBonusesRow);
+            ClearDiffLevel(BoardWidth + 6, 13);
+            drawData();
+            drawBonuses();
         }
 
         /// <summary>
@@ -472,9 +474,9 @@ namespace ZTP.Projekt
         }
 
         /// <summary>
-        /// Rysuje ruch pocisku
+        /// Sprawdza oraz rysuje kolizję i ruch pocisku
         /// </summary>
-        public void drawBulletsTrajectory()
+        public void bulletsTrajectory()
         {
             drawAmmunition(BoardWidth + 6, 7);
             List<Bullet> bulletsToRemove = new List<Bullet>();
