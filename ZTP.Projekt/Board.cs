@@ -435,7 +435,6 @@ namespace ZTP.Projekt
             Console.SetCursorPosition(x, startBonusesRow+2);
             Console.Write(new String(' ', BoardWidth));
             Console.SetCursorPosition(x, startBonusesRow);
-
         }
 
         /// <summary>
@@ -478,6 +477,7 @@ namespace ZTP.Projekt
         /// </summary>
         public void drawBulletsTrajectory()
         {
+            drawAmmunition(BoardWidth + 6, 7);
             List<Bullet> bulletsToRemove = new List<Bullet>();
             for (int i = 0; i < Bullets.Count; i++)
             {
@@ -578,7 +578,8 @@ namespace ZTP.Projekt
         public void drawAmmunition(int x, int y)
         {
             Console.SetCursorPosition(x, y);
-            Console.Write("Ammunition: ");
+            Console.Write("Ammunition:           ");
+            Console.SetCursorPosition(x+12,y);
             Console.Write(Ship.Ammunition.ToString());
         }
 
@@ -654,9 +655,9 @@ namespace ZTP.Projekt
                     else
                         alienFactory = new AlienFactoryMutated();
                     Alien alien = (Alien)alienFactory.createAlien();
+                    alien.Hp *= 1+ (Score / 1000); //1000;
                     alien.Position.y = startAlienRow;
                     alien.Position.x = 7 * i + 1;
-                   
                     Aliens.Add(alien);
                 }
             }
@@ -778,7 +779,6 @@ namespace ZTP.Projekt
                         Console.Write(b.Sprite[i]);
                     }
                 }
-                
             }
             Console.ForegroundColor = ConsoleColor.White;
         }
