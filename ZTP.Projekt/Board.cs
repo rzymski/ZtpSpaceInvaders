@@ -120,13 +120,6 @@ namespace ZTP.Projekt
         /// </summary>
         public List<Bullet> Bullets { get; set; } = new List<Bullet>();
 
-        #region śmieci może się przydadzą
-        //public int probabilityMutationAlien = 50; //from 0 to 100
-        //public int probabilityAppearanceAlien = 50; //from 0 to 100
-        //public int probalityBonusAppearance = 10; //from 0 to 100
-        #endregion
-
-
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -416,7 +409,7 @@ namespace ZTP.Projekt
                     {
                         b.drawBulletsTrajectory();
                     }
-                    Thread.Sleep(50);
+                    Thread.Sleep(25);
                 }
             }
         }
@@ -484,12 +477,14 @@ namespace ZTP.Projekt
                 var aliens = Aliens.getList();
                 foreach (Alien alien in aliens)
                 {
-                    if ((Bullets[i].position.x == alien.Position.x + 3) && (Bullets[i].position.y >= alien.Position.y && Bullets[i].position.y <= alien.Position.y + 3) && !alien.isDead)
+                    //if ((Bullets[i].position.x == alien.Position.x + 3) && (Bullets[i].position.y >= alien.Position.y && Bullets[i].position.y <= alien.Position.y + 3) && !alien.isDead)
+                    if ((Bullets[i].position.y == alien.Position.y + 3) && (Bullets[i].position.x >= alien.Position.x-2 && Bullets[i].position.x <= alien.Position.x + 5) && !alien.isDead)
                     {
                         //trafienie kosmity
-                        alien.notifyObserver();
-                        Bullets[i].penetrationValue--;
-                        if(Bullets[i].penetrationValue <= 0)
+                        int dealtDemage = Bullets[i].penetrationValue;
+                        Bullets[i].penetrationValue -= alien.Hp;
+                        alien.notifyObserver(dealtDemage);
+                        if (Bullets[i].penetrationValue <= 0)
                         {
                             bulletsToRemove.Add(Bullets[i]); //dodanie pocisku do listy pociskow do usuniecia
                             Menu.clearBoard(Bullets[i].position.x, Bullets[i].position.y + 1, 1, 1);
@@ -544,7 +539,6 @@ namespace ZTP.Projekt
                 {
                     bulletToRemove = true; //dodanie pocisku do listy pociskow do usuniecia
 
-                    bonus.wasHit = true;
                     Ship.sprite = bonus.changeShip();
                     Ship.Ammunition = bonus.getAmmunition();
                     Ship.Hp = bonus.getHp();
@@ -775,14 +769,11 @@ namespace ZTP.Projekt
         {
             foreach(Bonus b in Bonuses)
             {
-                if(!b.wasHit)
+                Console.ForegroundColor = (ConsoleColor)b.ColorValue;
+                for (int i = 0; i < b.Sprite.Length; i++)
                 {
-                    Console.ForegroundColor = (ConsoleColor)b.ColorValue;
-                    for (int i = 0; i < b.Sprite.Length; i++)
-                    {
-                        Console.SetCursorPosition(b.Position.x, b.Position.y + i);
-                        Console.Write(b.Sprite[i]);
-                    }
+                    Console.SetCursorPosition(b.Position.x, b.Position.y + i);
+                    Console.Write(b.Sprite[i]);
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;

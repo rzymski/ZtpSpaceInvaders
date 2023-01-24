@@ -13,7 +13,6 @@ namespace ZTP.Projekt
         public string[] Sprite { get; set; }
         public int ColorValue { get; set; }
 
-        public bool wasHit { get;set; } = false;
         public Bonus(IShip ship)
         {
             this.ship = ship;

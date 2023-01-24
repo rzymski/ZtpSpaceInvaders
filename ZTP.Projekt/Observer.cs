@@ -15,22 +15,16 @@ namespace ZTP.Projekt
             this.alien = alien;
         }
 
-        public void updateAlienStatus()
+        public void updateAlienStatus(int howMuchHpAllienLost)
         {
-            if(alien.Hp <= 1 )
+            alien.Hp -= howMuchHpAllienLost;
+
+            if (alien.Hp <= 0 )
             {
                 alien.isDead = true;
                 alien.setStatusToDelete();
                 alien.ClearAlien();
-                //Console.WriteLine("IF "+alien.Hp.ToString()+"\n");
             }
-            else
-            {
-                //Console.WriteLine("ELSE " + alien.Hp.ToString() + "\n");
-                alien.Hp--;
-            }
-            //Console.WriteLine(alien.Hp.ToString() + "\n");
-            //Console.ReadKey();
 
             Board b = Board.getInstance();
             b.Score += alien.pointsForKill;

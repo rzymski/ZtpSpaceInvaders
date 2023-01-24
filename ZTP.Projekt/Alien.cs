@@ -108,7 +108,6 @@ namespace ZTP.Projekt
             Console.Write("       ");
             Console.SetCursorPosition(Position.x, Position.y+2);
             Console.Write("       ");
-            Console.SetCursorPosition(Position.x, Position.y);
         }
 
         public void doSomething()
@@ -121,10 +120,10 @@ namespace ZTP.Projekt
             this.observer = observer;
         }
 
-        public void notifyObserver()
+        public void notifyObserver(int howMuchHpAllienLost)
         {
             //isDead = true;
-            observer.updateAlienStatus();
+            observer.updateAlienStatus(howMuchHpAllienLost);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace ZTP.Projekt
 {
     public interface IObserver
     {
-        public void updateAlienStatus();
+        public void updateAlienStatus(int howMuchHpAllienLost);
     }
 }
