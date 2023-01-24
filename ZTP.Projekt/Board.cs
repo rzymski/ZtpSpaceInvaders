@@ -475,21 +475,9 @@ namespace ZTP.Projekt
             for (int i = 0; i < Bullets.Count; i++)
             {
                 var aliens = Aliens.getList();
-                foreach (Alien alien in aliens)
+                if(bulletColisionWithAliens(aliens, Bullets[i]))
                 {
-                    //if ((Bullets[i].position.x == alien.Position.x + 3) && (Bullets[i].position.y >= alien.Position.y && Bullets[i].position.y <= alien.Position.y + 3) && !alien.isDead)
-                    if ((Bullets[i].position.y == alien.Position.y + 3) && (Bullets[i].position.x >= alien.Position.x-2 && Bullets[i].position.x <= alien.Position.x + 5) && !alien.isDead)
-                    {
-                        //trafienie kosmity
-                        int dealtDemage = Bullets[i].penetrationValue;
-                        Bullets[i].penetrationValue -= alien.Hp;
-                        alien.notifyObserver(dealtDemage);
-                        if (Bullets[i].penetrationValue <= 0)
-                        {
-                            bulletsToRemove.Add(Bullets[i]); //dodanie pocisku do listy pociskow do usuniecia
-                            Menu.clearBoard(Bullets[i].position.x, Bullets[i].position.y + 1, 1, 1);
-                        }
-                    }
+                    bulletsToRemove.Add(Bullets[i]); //dodanie pocisku do listy pociskow do usuniecia
                 }
 
                 List<Bonus> bonusesToRemove = new List<Bonus>();
@@ -498,7 +486,7 @@ namespace ZTP.Projekt
                     bulletsToRemove.Add(Bullets[i]); //dodanie pocisku do listy pociskow do usuniecia
                 }
 
-                if (Bullets[i].position.y <= 3)
+                if (Bullets[i].position.y <= 3) // usuniecie pocisk co dotarl do linii bonusow
                 {
                     bulletsToRemove.Add(Bullets[i]);
                     Menu.clearBoard(Bullets[i].position.x, Bullets[i].position.y + 1, 1, 1);
@@ -527,6 +515,28 @@ namespace ZTP.Projekt
                 Menu.clearBoard(bulletsToRemove[i].position.x, bulletsToRemove[i].position.y + 1, 1, 1);
                 Bullets.Remove(bulletsToRemove[i]);
             }
+        }
+
+        public bool bulletColisionWithAliens(List<Alien> aliens, Bullet bullet)
+        {
+            bool bulletToRemove = false;
+            foreach (Alien alien in aliens)
+            {
+                //if ((Bullets[i].position.x == alien.Position.x + 3) && (Bullets[i].position.y >= alien.Position.y && Bullets[i].position.y <= alien.Position.y + 3) && !alien.isDead)
+                if ((bullet.position.y == alien.Position.y + 3) && (bullet.position.x >= alien.Position.x - 2 && bullet.position.x <= alien.Position.x + 5) && !alien.isDead)
+                {
+                    //trafienie kosmity
+                    int dealtDemage = bullet.penetrationValue;
+                    bullet.penetrationValue -= alien.Hp;
+                    alien.notifyObserver(dealtDemage);
+                    if (bullet.penetrationValue <= 0)
+                    {
+                        bulletToRemove = true;
+                        Menu.clearBoard(bullet.position.x, bullet.position.y + 1, 1, 1);
+                    }
+                }
+            }
+            return bulletToRemove;
         }
 
         public bool activateBonus(Bullet bullet, List<Bonus> bonusesToRemove)
