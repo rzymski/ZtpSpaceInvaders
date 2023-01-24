@@ -20,6 +20,18 @@ namespace ZTP.Projekt
             "█▀█▀█▀█",
         };
 
+        public static readonly string[] shipWithoutAmmoString = new string[3] {
+            "       ",
+            "  ▄█▄  ",
+            " ▀█▀█▀ ",
+        };
+
+        public static readonly string[] shipDestroyedString = new string[3] {
+            "       ",
+            "   █▄  ",
+            " ▀█▀█  ",
+        };
+
         public static readonly string[] enemy1String = new string[3] {
             " ▀▄ ▄▀ ",
             " █▀█▀█ ",

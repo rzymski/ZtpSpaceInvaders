@@ -568,6 +568,10 @@ namespace ZTP.Projekt
                 Bullet bullet = new Bullet(Ship.Position.x + 3, Ship.Position.y - 2, Ship.Attack);
                 Bullets.Add(bullet);
             }
+            else
+            {
+                Ship.sprite = Sprites.shipWithoutAmmoString;
+            }
         }
 
         /// <summary>
@@ -625,6 +629,7 @@ namespace ZTP.Projekt
             
             if(Ship.Hp <= 0 && endGame==false)
             {
+                Ship.sprite = Sprites.shipDestroyedString;
                 endGame = true;
                 Score score = new Score();
                 score.PlayerScore = this.Score;
