@@ -246,7 +246,6 @@ namespace ZTP.Projekt
             drawAmmunition(BoardWidth + 6, 7);
             drawPoints(BoardWidth + 6, 10);
             drawDiffLevel(BoardWidth + 6, 13);
-           
         }
 
         void checkDiffLevel()
@@ -315,6 +314,9 @@ namespace ZTP.Projekt
         {
             //identyfikator blokady
             static readonly object Identity = new object();
+            /// <summary>
+            /// tworzenie nowej fali kosmitow w watku, watek blokowany na czas operacji
+            /// </summary>
             public static void alienMovements()
             {
                 Board b;
@@ -353,13 +355,15 @@ namespace ZTP.Projekt
                         b.Ship.moveShip(m, b.BoardWidth);
                         //na razie rysuje bonusy, ale nie czysci ich obaszru poniewaz bonusy sie nie nakladaja i nie mamy funkcjonalnosci ich usuwajacej, pozniej sie doda czyszczenie narysowanego bonusu po jego zniknieciu
                         b.drawBonuses();
-
                         b.drawData();
                     }
                     Thread.Sleep(b.timeBetweenNextWave);
                 }
             }
 
+            /// <summary>
+            /// ruch statkiem w jednym watka, watek blokowany na czas kluczowej operacji
+            /// </summary>
             public static void spaceshipMovements()
             {
                 Board b;
@@ -395,7 +399,9 @@ namespace ZTP.Projekt
                     }
                 }
             }
-
+            /// <summary>
+            /// ruch pocisku w watku, watek blokowany na czas operacji
+            /// </summary>
             public static void bulletMovements()
             {
                 Board b;
@@ -509,14 +515,19 @@ namespace ZTP.Projekt
                     Bonuses.Remove(bonusesToRemove[j]);
                 }
             }
-            //usuwamoe pociskow
-            for(int i=0; i < bulletsToRemove.Count; i++)
+            for (int i=0; i < bulletsToRemove.Count; i++)
             {
                 Menu.clearBoard(bulletsToRemove[i].position.x, bulletsToRemove[i].position.y + 1, 1, 1);
                 Bullets.Remove(bulletsToRemove[i]);
             }
         }
 
+        /// <summary>
+        /// trafienie pociskiem w kosmite
+        /// </summary>
+        /// <param name="aliens"></param>
+        /// <param name="bullet"></param>
+        /// <returns></returns>
         public bool bulletColisionWithAliens(List<Alien> aliens, Bullet bullet)
         {
             bool bulletToRemove = false;
@@ -534,11 +545,18 @@ namespace ZTP.Projekt
                         bulletToRemove = true;
                         Menu.clearBoard(bullet.position.x, bullet.position.y + 1, 1, 1);
                     }
+                    drawPoints(BoardWidth+6, 10);
                 }
             }
             return bulletToRemove;
         }
 
+        /// <summary>
+        /// aktywacja bonusow
+        /// </summary>
+        /// <param name="bullet"></param>
+        /// <param name="bonusesToRemove"></param>
+        /// <returns></returns>
         public bool activateBonus(Bullet bullet, List<Bonus> bonusesToRemove)
         {
             bool bulletToRemove = false;
@@ -556,6 +574,8 @@ namespace ZTP.Projekt
                     bonusesToRemove.Add(bonus); //dodanie bonusu do listy bonusow do usuniecia
                     bullet.penetrationValue = 0;
                     Menu.clearBoard(bonus.Position.x, bonus.Position.y, 3, 7);
+                    drawHp(BoardWidth + 6, 1);
+                    drawAttackPower(BoardWidth+6, 4);
                 }
             }
             return bulletToRemove;
@@ -705,6 +725,11 @@ namespace ZTP.Projekt
             }
         }
 
+        /// <summary>
+        /// wybranie odpowiedniego typu bonusu
+        /// </summary>
+        /// <param name="bonusType"></param>
+        /// <returns></returns>
         public Bonus chooseBonusType(int bonusType)
         {
             Bonus b = null;
