@@ -341,7 +341,7 @@ namespace ZTP.Projekt
                             {
                                 b.Ship.Hp -= 1;
                                 alien.ClearAlien();
-                                b.Ship.moveShip(MoveDirection.None, b.BoardWidth);
+                                //b.Ship.moveShip(MoveDirection.None, b.BoardWidth);
                             }
                         }
 
