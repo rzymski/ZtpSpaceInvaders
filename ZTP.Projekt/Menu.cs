@@ -23,7 +23,7 @@ namespace ZTP.Projekt
                 Console.WriteLine("Things may not look quite right, unless you adjust the text size in your console window.");
                 Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 33, Console.LargestWindowHeight / 2 + 1);
                 Console.WriteLine($"Required min. resolution 160x65, your actual resolution is " + Console.LargestWindowWidth + "x" + Console.LargestWindowHeight);
-                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 10, Console.LargestWindowHeight / 2 + 2);
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 14, Console.LargestWindowHeight / 2 + 2);
                 waitForKey(ConsoleKey.Enter);
                 Console.ForegroundColor = ConsoleColor.White;
             }
@@ -38,7 +38,7 @@ namespace ZTP.Projekt
             //Console.ReadKey();
         }
 
-        static void waitForKey(ConsoleKey expectedKey = ConsoleKey.Home)
+        public static void waitForKey(ConsoleKey expectedKey = ConsoleKey.Home)
         {
             if (expectedKey != ConsoleKey.Home)
             {

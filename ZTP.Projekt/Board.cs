@@ -146,8 +146,45 @@ namespace ZTP.Projekt
         /// <param name="fileFormat">format pliku</param>
         private void initExcelDoc(ExcelFileFormat fileFormat)
         {
-            ExcelFile = WorkBook.Load("scores.xlsx");
-            ws = ExcelFile.WorkSheets.First();
+            string baseDirectory = AppContext.BaseDirectory;
+            string projectRoot = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\..\"));
+            string scoreFilePath = Path.Combine(projectRoot, "scores.xlsx");
+            try
+            {
+                ExcelFile = WorkBook.Load(scoreFilePath);
+                ws = ExcelFile.WorkSheets.First();
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.Clear();
+                Console.WriteLine(scoreFilePath);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 7, Console.LargestWindowHeight / 2 - 2);
+                Console.WriteLine("-- Warning --");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 25, Console.LargestWindowHeight / 2 - 1);
+                Console.WriteLine($"There's no file scores.xlsx in project directory.");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 12, Console.LargestWindowHeight / 2);
+                Console.WriteLine("Results won't be saved.");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 25, Console.LargestWindowHeight / 2 + 1);
+                Console.Write("If you don't mind that ");
+                Menu.waitForKey(ConsoleKey.Enter);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 7, Console.LargestWindowHeight / 2 - 2);
+                Console.WriteLine("-- Warning --");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 39, Console.LargestWindowHeight / 2 - 1);
+                Console.WriteLine($"There's a exception with loading file score.xls. Do you have excel installed?");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 12, Console.LargestWindowHeight / 2);
+                Console.WriteLine("Results won't be saved.");
+                Console.SetCursorPosition(Console.LargestWindowWidth / 2 - 14, Console.LargestWindowHeight / 2 + 1);
+                Menu.waitForKey(ConsoleKey.Enter);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            
         }
 
         /// <summary>
@@ -275,16 +312,19 @@ namespace ZTP.Projekt
         public void initGame(string UserName)
         {
             PlayerName = UserName;
-            //initExcelDoc(ExcelFileFormat.XLSX);
+            try
+            {
+                initExcelDoc(ExcelFileFormat.XLSX);
 
-            /*  TEST ZAPISU
-            Score score = new Score();
-            score.Id = 1;
-            score.PlayerScore = 10;
-            score.Nick = "test4";
-            score.SaveToExcel(ws);
-            ExcelFile.SaveAs("scores.xlsx");
-            */
+                /*  TEST ZAPISU
+                Score score = new Score();
+                score.Id = 1;
+                score.PlayerScore = 10;
+                score.Nick = "test4";
+                score.SaveToExcel(ws);
+                ExcelFile.SaveAs("scores.xlsx");
+                */
+            } catch (Exception ex) { }
 
             difficultLevel = new Easy();
             difficultLevel.setDifficultyLevel(this);
@@ -639,10 +679,9 @@ namespace ZTP.Projekt
         {
             Thread one = new Thread(MyThreadClass.alienMovements);
             Thread two = new Thread(MyThreadClass.spaceshipMovements);
+            Thread third = new Thread(MyThreadClass.bulletMovements);
             one.Start();
             two.Start();
-
-            Thread third = new Thread(MyThreadClass.bulletMovements);
             third.Start();
         }
 
@@ -660,8 +699,11 @@ namespace ZTP.Projekt
                 Score score = new Score();
                 score.PlayerScore = this.Score;
                 score.Nick = this.PlayerName;
-                //score.SaveToExcel(ws);
-                //ExcelFile.Save();
+                try
+                {
+                    score.SaveToExcel(ws);
+                    ExcelFile.Save();
+                } catch (Exception ex) { }
             }
             return endGame;
         }

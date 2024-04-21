@@ -1,34 +1,35 @@
 ﻿using ZTP.Projekt;
+using System;
+using System.Runtime.InteropServices;
 
-Console.CursorVisible = false;
-int resolutionWidth = 160, resolutionHeight = 65;
-Menu.setResolution(ref resolutionWidth, ref resolutionHeight);
-//int startColumnToDraw = (resolutionWidth - 100) / 2;
-//Menu.drawFirstMenu(0, startColumnToDraw, 100, resolutionWidth);
-//int chosenOption = Menu.chooseOptionFirstMenu(startColumnToDraw);
+class Program
+{
+    // Definicje funkcji WinAPI
+    [DllImport("kernel32.dll", ExactSpelling = true)]
+    private static extern IntPtr GetConsoleWindow();
 
-//Board board = Board.getInstance();
+    [DllImport("user32.dll", ExactSpelling = true)]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-//if(chosenOption == 0)
-//{
-//    board.initGame();
-//}
+    private const int SW_MAXIMIZE = 3;
 
-string text = @"
-███████╗███╗   ██╗████████╗███████╗██████╗     ██╗   ██╗███████╗███████╗██████╗     ███╗   ██╗ █████╗ ███╗   ███╗███████╗       
-██╔════╝████╗  ██║╚══██╔══╝██╔════╝██╔══██╗    ██║   ██║██╔════╝██╔════╝██╔══██╗    ████╗  ██║██╔══██╗████╗ ████║██╔════╝██╗    
-█████╗  ██╔██╗ ██║   ██║   █████╗  ██████╔╝    ██║   ██║███████╗█████╗  ██████╔╝    ██╔██╗ ██║███████║██╔████╔██║█████╗  ╚═╝    
-██╔══╝  ██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗    ██║   ██║╚════██║██╔══╝  ██╔══██╗    ██║╚██╗██║██╔══██║██║╚██╔╝██║██╔══╝  ██╗    
-███████╗██║ ╚████║   ██║   ███████╗██║  ██║    ╚██████╔╝███████║███████╗██║  ██║    ██║ ╚████║██║  ██║██║ ╚═╝ ██║███████╗╚═╝    
-╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝       
-                                                                                                                                
-";
+    static void Main(string[] args)
+    {
+        // Ustawienie konsoli na pełny ekran
+        IntPtr consoleWindow = GetConsoleWindow();
+        if (consoleWindow != IntPtr.Zero)
+        {
+            ShowWindow(consoleWindow, SW_MAXIMIZE);
+        }
 
-Console.ForegroundColor = ConsoleColor.Red;
-Console.WriteLine(text);
-Console.ResetColor();
-string username = Console.ReadLine();
-//string username = "rzymski";
+        Console.CursorVisible = false;
+        int resolutionWidth = 160, resolutionHeight = 65;
+        Menu.setResolution(ref resolutionWidth, ref resolutionHeight);
+        Console.Write("Enter your username: ");
+        string username = Console.ReadLine();
+        //string username = "rzymski";
 
-Board board = Board.getInstance();
-board.initGame(username);
+        Board board = Board.getInstance();
+        board.initGame(username);
+    }
+}
